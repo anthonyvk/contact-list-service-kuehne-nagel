@@ -1,6 +1,7 @@
 package com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.controller;
 
 import com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.dto.ContactDto;
+import com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.dto.ContactListResponseDto;
 import com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.model.Contact;
 import com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.service.ContactService;
 import org.modelmapper.ModelMapper;
@@ -28,39 +29,56 @@ public class ContactListController {
     }
 
     @GetMapping(value = "/getAllContacts", produces = "application/json")
-    public ResponseEntity<List<ContactDto>> getAllContacts(
+    public ResponseEntity<ContactListResponseDto> getAllContacts(
             @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam() Integer size
+            @RequestParam(required = false, defaultValue = "10") Integer size
     )  {
         Pageable pageable = PageRequest.of(page, size);
         List<Contact> contactList = contactService.getAll(pageable);
-        List<ContactDto> contactDtoList = mapContactEntitiesToDto(contactList, modelMapper);
-        return ResponseEntity.ok().body(contactDtoList);
+
+        Long totalContacts = contactService.getCount();
+        ContactListResponseDto contactListResponseDto = mapToContactListResponseDto(page, size, contactList, totalContacts);
+        return ResponseEntity.ok().body(contactListResponseDto);
     }
 
     @GetMapping(value = "/find", produces = "application/json")
-    public ResponseEntity<List<ContactDto>> find(
+    public ResponseEntity<ContactListResponseDto> find(
             @RequestParam(required = false, defaultValue = "name") String searchField,
-            @RequestParam(required = false, defaultValue = "0") String searchValue,
+            @RequestParam(required = false, defaultValue = "") String searchValue,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam() Integer size
     )  {
         Pageable pageable = PageRequest.of(page, size);
         List<Contact> contactList = contactService.findAllByName(searchValue, pageable);
-        List<ContactDto> contactDtoList = mapContactEntitiesToDto(contactList, modelMapper);
-        return ResponseEntity.ok().body(contactDtoList);
+
+        Long totalContacts = Long.valueOf(size);
+        ContactListResponseDto contactListResponseDto = mapToContactListResponseDto(page, size, contactList, totalContacts);
+        return ResponseEntity.ok().body(contactListResponseDto);
     }
 
     @GetMapping(value = "/findNameContaining", produces = "application/json")
-    public ResponseEntity<List<ContactDto>> find(
+    public ResponseEntity<ContactListResponseDto> find(
             @RequestParam(required = false, defaultValue = "0") String name,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam() Integer size
     )  {
         Pageable pageable = PageRequest.of(page, size);
         List<Contact> contactList = contactService.findByNameContaining(name, pageable);
+
+        Long totalContacts = contactService.getCount();
+        ContactListResponseDto contactListResponseDto = mapToContactListResponseDto(page, size, contactList, totalContacts);
+        return ResponseEntity.ok().body(contactListResponseDto);
+    }
+
+    private ContactListResponseDto mapToContactListResponseDto(Integer page, Integer size, List<Contact> contactList, Long totalContacts) {
         List<ContactDto> contactDtoList = mapContactEntitiesToDto(contactList, modelMapper);
-        return ResponseEntity.ok().body(contactDtoList);
+        ContactListResponseDto contactListResponseDto = ContactListResponseDto.builder()
+                .contactDtoList(contactDtoList)
+                .totalContacts(totalContacts)
+                .currentPage(page)
+                .totalPages(totalContacts/ size)
+                .build();
+        return contactListResponseDto;
     }
 
     private static List<ContactDto> mapContactEntitiesToDto(List<Contact> contactList, ModelMapper modelMapper) {

@@ -1,4 +1,4 @@
-package com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.dao;
+package com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.repository;
 
 import com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.model.Contact;
 import org.springframework.data.domain.Page;
