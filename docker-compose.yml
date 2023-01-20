@@ -1,0 +1,39 @@
+services:
+  contact-list-service:
+    image: docker.io/anthony/contact-list-service-kuehne-nagel:latest
+    environment:
+      MYSQL_HOST: 'localhost'
+      MYSQL_DATABASE: 'contact_database'
+      USERNAME: 'root'
+      PASSWORD: 'password'
+      PROFILE: 'mysql'
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    depends_on:
+      - mysql
+
+  webapp:
+    image: docker.io/anthonyvk/contact-list-angular-app-kuehne-nagel
+    environment:
+      BASEURL: 'http\:\/\/localhost\:8080\/api'
+    ports:
+      - 80:80
+    expose:
+      - 80
+    depends_on:
+      - contact-list-service
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'contact_database'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'

@@ -24,3 +24,15 @@ Expected outcome
 A repository at your GitHub account/local KN Git from where you can clone and run 
 the web app with little-to-zero efforts
 ```
+
+## To Build Docker image :
+
+`docker build -t anthony/contact-list-service-kuehne-nagel .
+`
+
+## To run the Docker image :
+
+`docker run -p8080:8080 anthony/contact-list-service-kuehne-nagel
+`
+
+## To run the entire suite with Docker compose : 
