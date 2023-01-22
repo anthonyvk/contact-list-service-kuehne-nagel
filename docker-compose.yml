@@ -18,7 +18,7 @@ services:
       retries: 10
 
   contact-list-service:
-    image: docker.io/anthonyvks/contact-list-service-kuehne-nagel5:latest
+    image: docker.io/anthonyvks/contact-list-service-kuehne-nagel:latest
     environment:
       MYSQL_HOST: mysqldb
       MYSQL_DATABASE: contact_database
@@ -34,7 +34,7 @@ services:
         condition: service_healthy
 
   webapp:
-    image: docker.io/anthonyvks/contact-list-angular-app-kuehne-nagel
+    image: docker.io/anthonyvks/contact-list-angular-app-kuehne-nagel:latest
     environment:
       BASEURL: 'http\:\/\/localhost\:8080\/api'
     ports:
