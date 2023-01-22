@@ -1,7 +1,7 @@
 package com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.service;
 
-import com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.repository.ContactRepository;
 import com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.model.Contact;
+import com.savk.kuehnenagel.contactlist.contactlistservicekuehnenagel.repository.ContactRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
