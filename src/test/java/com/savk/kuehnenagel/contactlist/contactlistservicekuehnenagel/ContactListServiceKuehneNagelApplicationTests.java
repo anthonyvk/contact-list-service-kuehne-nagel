@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @ActiveProfiles("h2")
@@ -18,9 +17,6 @@ class ContactListServiceKuehneNagelApplicationTests {
 
     @Autowired
     private ContactService contactService;
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Test
     void checkWhetherDataIsPersisted () {
