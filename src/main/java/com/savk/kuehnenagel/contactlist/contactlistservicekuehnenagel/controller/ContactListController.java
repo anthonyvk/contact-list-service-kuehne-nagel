@@ -42,8 +42,7 @@ public class ContactListController {
     }
 
     @GetMapping(value = "/find", produces = "application/json")
-    public ResponseEntity<ContactListResponseDto> find(
-            @RequestParam(required = false, defaultValue = "name") String searchField,
+    public ResponseEntity<ContactListResponseDto> findByName(
             @RequestParam(required = false, defaultValue = "") String searchValue,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam() Integer size
